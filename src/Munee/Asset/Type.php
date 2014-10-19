@@ -12,7 +12,6 @@ use Munee\ErrorException;
 use Munee\Request;
 use Munee\Response;
 use Munee\Utils;
-use Munee\Asset\NotFoundException;
 
 /**
  * Base Asset Class
@@ -32,7 +31,7 @@ abstract class Type
     /**
      * Stores the list of filters that will be applied to the requested asset.
      *
-     * @var array
+     * @var Filter[]
      */
     protected $filters = array();
 
@@ -94,6 +93,7 @@ abstract class Type
         foreach (array_keys($rawParams) as $filterName) {
             $filterClass = 'Munee\\Asset\\Filter\\' . $assetShortName . '\\' . ucfirst($filterName);
             if (class_exists($filterClass)) {
+                /** @var Filter $Filter */
                 $Filter = new $filterClass();
                 $allowedParams += $Filter->getAllowedParams();
                 $this->filters[$filterName] = $Filter;

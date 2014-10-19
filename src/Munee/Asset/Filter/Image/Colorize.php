@@ -9,8 +9,8 @@
 namespace Munee\Asset\Filter\Image;
 
 use Munee\Asset\Filter;
-use Imagine\Gd\Imagine;
 use Imagine\Image\Color;
+use Munee\Asset\ImagineFactory;
 
 /**
  * Colorize Filter for Images
@@ -36,14 +36,15 @@ class Colorize extends Filter
      *
      * @param string $file
      * @param array $arguments
-     * @param array $typeOptions
+     * @param array $imageOptions
      *
      * @return void
      */
-    public function doFilter($file, $arguments, $typeOptions)
+    public function doFilter($file, $arguments, $imageOptions)
     {
-        $Imagine = new Imagine();
+        $Imagine = ImagineFactory::create($imageOptions['imageProcessor']);
         $image = $Imagine->open($file);
+
         $colour = new Color('#' . $arguments['colorize']);
         $image->effects()->colorize($colour);
         $image->save($file);

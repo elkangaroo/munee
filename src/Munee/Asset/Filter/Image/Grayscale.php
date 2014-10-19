@@ -9,7 +9,7 @@
 namespace Munee\Asset\Filter\Image;
 
 use Munee\Asset\Filter;
-use Imagine\Gd\Imagine;
+use Munee\Asset\ImagineFactory;
 
 /**
  * Grayscale Filter for Images
@@ -36,18 +36,19 @@ class Grayscale extends Filter
      *
      * @param string $file
      * @param array $arguments
-     * @param array $typeOptions
+     * @param array $imageOptions
      *
      * @return void
      */
-    public function doFilter($file, $arguments, $typeOptions)
+    public function doFilter($file, $arguments, $imageOptions)
     {
         if (! $arguments['grayscale']) {
             return;
         }
 
-        $Imagine = new Imagine();
+        $Imagine = ImagineFactory::create($imageOptions['imageProcessor']);
         $image = $Imagine->open($file);
+
         $image->effects()->grayscale();
         $image->save($file);
     }

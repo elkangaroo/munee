@@ -9,7 +9,7 @@
 namespace Munee\Asset\Filter\Image;
 
 use Munee\Asset\Filter;
-use Imagine\Gd\Imagine;
+use Munee\Asset\ImagineFactory;
 
 /**
  * Negative Filter for Images
@@ -35,14 +35,15 @@ class Negative extends Filter
      *
      * @param string $file
      * @param array $arguments
-     * @param array $typeOptions
+     * @param array $imageOptions
      *
      * @return void
      */
-    public function doFilter($file, $arguments, $typeOptions)
+    public function doFilter($file, $arguments, $imageOptions)
     {
-        $Imagine = new Imagine();
+        $Imagine = ImagineFactory::create($imageOptions['imageProcessor']);
         $image = $Imagine->open($file);
+
         $image->effects()->negative();
         $image->save($file);
     }
